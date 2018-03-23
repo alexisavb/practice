@@ -4,33 +4,35 @@ using namespace std;
 
 class Urlify{
 	public:
-		string url(string,int);
+		string url(char *,int);
 };
 
-string Urlify::url(string strg, int tam){
-	int count = 0;
+string Urlify::url(char *strg, int tam){
+	int count = 0, index;
 	for(int i = 0; i < tam;i++){
 		if(strg[i] == ' '){
 			count++;
 		}
-	}	
-	int newTam = (count*3)+(tam-count);	
-	char *chr = new char[newTam]();	
-	for(int i = 0, j = 0;i < tam;i++){
+	}		
+	index = tam + (count * 2);			
+	//if(tam < strlen(strg)){strg[tam] = '/0';}
+	for(int i = tam -1; i >= 0; i--){
 		if(strg[i] == ' '){
-			chr[j] = '%';
-			chr[j+1] = '2';
-			chr[j+2] = '0';
-			j+=3;
+			strg[index - 1] = '0';
+			strg[index - 2] = '2';
+			strg[index - 3] = '%';
+			index -= 3;
 		}else{
-			chr[j++] = strg[i];
+			strg[index - 1] = strg[i];
+			index--;
 		}
 	}	
-	return chr;
+	return strg;
 }
 
 int main(){
 	Urlify rl;
-	string aux = rl.url("Mr John Smith    ",13);
+	char cat[] = "Mr John Smith    ";
+	string aux = rl.url(cat,13);
 	cout << "Resultado: " << aux  << endl;
 }
